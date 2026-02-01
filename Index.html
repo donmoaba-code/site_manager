@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Sheet - Bookmark Manager</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "lucide-react": "https://esm.sh/lucide-react@0.292.0"
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+        /* 스크롤바 커스텀 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        
+        .tab-active {
+            background-color: white;
+            border-color: #d1d5db;
+            border-bottom-color: white;
+            color: #15803d; /* green-700 */
+            z-index: 10;
+            margin-bottom: -1px;
+        }
+        .tab-inactive {
+            background-color: #f3f4f6;
+            border-color: transparent;
+            color: #6b7280;
+        }
+        .tab-inactive:hover {
+            background-color: #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+        import React, { useState, useMemo, useEffect, useRef } from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { 
+            Search, Plus, FolderPlus, Download, Upload, 
+            ExternalLink, Eye, EyeOff, Edit2, Trash2, 
+            Copy, Save, X, Shield, Check, FileJson,
+            Settings, RotateCcw
+        } from 'lucide-react';
+
+        const App = () => {
+            // --- 초기 데이터 설정 (로컬 스토리지 연동) ---
+            const [bookmarks, setBookmarks] = useState(() => {
+                const saved = localStorage.getItem('smart_bookmarks');
+                return saved ? JSON.parse(saved) : [
+                    { id: 1, title: 'Google', url: 'https://google.com', userId: 'user@gmail.com', password: 'password123', group: '업무', createdAt: Date.now() },
+                    { id: 2, title: 'GitHub', url: 'https://github.com', userId: 'dev_hero', password: 'git_password!', group: '개발', createdAt: Date.now() - 10000 }
+                ];
+            });
+            
+            const [groups, setGroups] = useState(() => {
+                const savedGroups = localStorage.getItem('smart_groups');
+                return savedGroups ? JSON.parse(savedGroups) : ['전체', '업무', '개발', '개인', '쇼핑'];
+            });
+
+            // --- 상태 관리 ---
+            const [selectedGroup, setSelectedGroup] = useState('전체');
+            const [searchTerm, setSearchTerm] = useState('');
+            
+            // 인라인 수정 상태 관리 (북마크)
+            const [editingId, setEditingId] = useState(null);
+            const [editFormData, setEditFormData] = useState({});
+
+            // 그룹 이름 수정 상태 관리
+            const [editingGroup, setEditingGroup] = useState(null); // 수정 중인 그룹명 (string | null)
+            const [tempGroupName, setTempGroupName] = useState(''); // 입력 중인 그룹명
+
+            // UI 상태
+            const [isModalOpen, setIsModalOpen] = useState(false);
+            const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
+            const [showPassword, setShowPassword] = useState({});
+            const [copyFeedback, setCopyFeedback] = useState(null);
+
+            // 파일 업로드 input 참조
+            const fileInputRef = useRef(null);
+
+            // 폼 필드 상태 (새로 추가용)
+            const [formData, setFormData] = useState({
+                title: '', url: '', userId: '', password: '', group: '업무'
+            });
+            const [newGroupName, setNewGroupName] = useState('');
+
+            // --- 데이터 지속성 (Auto Save) ---
+            useEffect(() => {
+                localStorage.setItem('smart_bookmarks', JSON.stringify(bookmarks));
+            }, [bookmarks]);
+
+            useEffect(() => {
+                localStorage.setItem('smart_groups', JSON.stringify(groups));
+            }, [groups]);
+
+            // --- 필터링 로직 ---
+            const filteredBookmarks = useMemo(() => {
+                return bookmarks.filter(bm => {
+                    const matchesGroup = selectedGroup === '전체' || bm.group === selectedGroup;
+                    const matchesSearch = bm.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                                        bm.url.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        (bm.userId && bm.userId.toLowerCase().includes(searchTerm.toLowerCase()));
+                    return matchesGroup && matchesSearch;
+                }).sort((a, b) => b.createdAt - a.createdAt);
+            }, [bookmarks, selectedGroup, searchTerm]);
+
+            // --- 핸들러 함수들 ---
+
+            // 1. 파일 내보내기 (Export)
+            const handleExport = () => {
+                const dataStr = JSON.stringify({ bookmarks, groups }, null, 2);
+                const blob = new Blob([dataStr], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `bookmarks_backup_${new Date().toISOString().slice(0,10)}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showFeedback('파일 저장 완료');
+            };
+
+            // 2. 파일 불러오기 (Import - 중복 방지 로직 적용)
+            const handleImportClick = () => {
+                fileInputRef.current.click();
+            };
+
+            const handleFileChange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const importedData = JSON.parse(event.target.result);
+                        
+                        if (importedData.bookmarks && Array.isArray(importedData.bookmarks) && importedData.groups) {
+                            // 중복 체크 로직
+                            // 기준: 제목(title)과 URL이 모두 같으면 중복으로 간주
+                            const newBookmarks = [];
+                            let skippedCount = 0;
+
+                            importedData.bookmarks.forEach(importedBm => {
+                                const isDuplicate = bookmarks.some(existingBm => 
+                                    existingBm.url === importedBm.url && existingBm.title === importedBm.title
+                                );
+
+                                if (!isDuplicate) {
+                                    // ID 충돌 방지를 위해 새 ID 부여
+                                    newBookmarks.push({
+                                        ...importedBm,
+                                        id: Date.now() + Math.random(), 
+                                        createdAt: importedBm.createdAt || Date.now()
+                                    });
+                                } else {
+                                    skippedCount++;
+                                }
+                            });
+
+                            if (newBookmarks.length === 0 && skippedCount > 0) {
+                                alert('모든 데이터가 이미 존재하여 추가되지 않았습니다.');
+                                return;
+                            }
+
+                            if (newBookmarks.length > 0) {
+                                if (window.confirm(`새로운 항목 ${newBookmarks.length}개를 추가하시겠습니까?\n(중복된 항목 ${skippedCount}개 제외됨)`)) {
+                                    // 1. 북마크 합치기
+                                    setBookmarks(prev => [...newBookmarks, ...prev]);
+                                    
+                                    // 2. 그룹 합치기 (중복 제거)
+                                    const mergedGroups = Array.from(new Set([...groups, ...importedData.groups]));
+                                    setGroups(mergedGroups);
+
+                                    showFeedback(`${newBookmarks.length}개 추가 완료`);
+                                }
+                            } else {
+                                alert('추가할 새로운 데이터가 없습니다.');
+                            }
+
+                        } else {
+                            alert('올바르지 않은 파일 형식입니다.');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('파일을 읽는 중 오류가 발생했습니다.');
+                    }
+                };
+                reader.readAsText(file);
+                e.target.value = ''; // 초기화
+            };
+
+            // 3. 데이터 전체 초기화 (Reset)
+            const handleReset = () => {
+                if (window.confirm("경고: 저장된 모든 북마크와 그룹이 삭제됩니다.\n정말로 초기화하시겠습니까?")) {
+                    setBookmarks([]);
+                    setGroups(['전체', '업무', '개발', '개인', '쇼핑']); // 기본 그룹으로 리셋
+                    setSelectedGroup('전체');
+                    showFeedback('초기화 되었습니다');
+                }
+            };
+
+            // 4. 인라인 수정 시작 (북마크)
+            const startEditing = (bm) => {
+                setEditingId(bm.id);
+                setEditFormData({ ...bm });
+            };
+
+            // 5. 인라인 수정 저장 (북마크)
+            const saveEditing = () => {
+                setBookmarks(bookmarks.map(bm => bm.id === editingId ? { ...editFormData } : bm));
+                setEditingId(null);
+                showFeedback('수정되었습니다');
+            };
+
+            // 6. 그룹 관리 (이름 변경, 삭제)
+            
+            // 이름 변경 시작
+            const startGroupRename = (group) => {
+                if (group === '전체') return;
+                setEditingGroup(group);
+                setTempGroupName(group);
+            };
+
+            // 이름 변경 저장
+            const saveGroupRename = () => {
+                if (!tempGroupName.trim() || tempGroupName === editingGroup) {
+                    setEditingGroup(null);
+                    return;
+                }
+                if (groups.includes(tempGroupName)) {
+                    alert('이미 존재하는 그룹 이름입니다.');
+                    return;
+                }
+
+                // 그룹명 업데이트
+                setGroups(groups.map(g => g === editingGroup ? tempGroupName : g));
+                
+                // 해당 그룹의 북마크들도 그룹명 업데이트
+                setBookmarks(bookmarks.map(bm => bm.group === editingGroup ? { ...bm, group: tempGroupName } : bm));
+                
+                if (selectedGroup === editingGroup) {
+                    setSelectedGroup(tempGroupName);
+                }
+
+                setEditingGroup(null);
+                showFeedback('그룹 이름이 변경되었습니다');
+            };
+
+            // 그룹 삭제
+            const handleDeleteGroup = (groupToDelete) => {
+                if (groupToDelete === '전체') return;
+                
+                if (window.confirm(`'${groupToDelete}' 그룹을 삭제하시겠습니까?\n해당 그룹의 북마크는 '미분류'로 이동됩니다.`)) {
+                    // 1. 그룹 삭제
+                    const newGroups = groups.filter(g => g !== groupToDelete);
+                    if (!newGroups.includes('미분류')) {
+                        newGroups.push('미분류');
+                    }
+                    setGroups(newGroups);
+
+                    // 2. 북마크 이동 (삭제된 그룹 -> 미분류)
+                    setBookmarks(bookmarks.map(bm => 
+                        bm.group === groupToDelete ? { ...bm, group: '미분류' } : bm
+                    ));
+
+                    // 3. 뷰 이동
+                    if (selectedGroup === groupToDelete) {
+                        setSelectedGroup('전체');
+                    }
+                    showFeedback('그룹이 삭제되었습니다');
+                }
+            };
+
+            // 7. 북마크 삭제
+            const handleDelete = (id) => {
+                if (window.confirm('정말 삭제하시겠습니까?')) {
+                    setBookmarks(bookmarks.filter(bm => bm.id !== id));
+                    showFeedback('삭제되었습니다');
+                }
+            };
+
+            // 8. 새 북마크 추가
+            const handleSubmitNew = (e) => {
+                e.preventDefault();
+                setBookmarks([{ ...formData, id: Date.now(), createdAt: Date.now() }, ...bookmarks]);
+                setIsModalOpen(false);
+                setFormData({ title: '', url: '', userId: '', password: '', group: '업무' });
+                showFeedback('추가되었습니다');
+            };
+
+            // 9. 그룹 추가
+            const handleAddGroup = () => {
+                if (newGroupName && !groups.includes(newGroupName)) {
+                    setGroups([...groups, newGroupName]); 
+                    setNewGroupName(''); 
+                    setIsGroupModalOpen(false);
+                }
+            };
+
+            // 유틸: 피드백 메시지
+            const showFeedback = (msg) => {
+                setCopyFeedback(msg);
+                setTimeout(() => setCopyFeedback(null), 2000);
+            };
+
+            // 유틸: 클립보드 복사
+            const copyToClipboard = (text) => {
+                navigator.clipboard.writeText(text);
+                showFeedback('복사됨!');
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col">
+                    {/* --- 상단 헤더 --- */}
+                    <header className="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
+                        <div className="max-w-[1600px] mx-auto px-4 h-16 flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-2 shrink-0">
+                                <div className="bg-green-600 p-1.5 rounded text-white">
+                                    <Shield className="w-5 h-5" />
+                                </div>
+                                <h1 className="text-lg font-bold text-gray-800 hidden sm:block">Smart Sheet</h1>
+                            </div>
+
+                            {/* 검색바 */}
+                            <div className="flex-1 max-w-xl relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                                <input 
+                                    type="text" 
+                                    placeholder="검색 (제목, URL, ID)..."
+                                    className="w-full bg-gray-100 border border-transparent rounded-md py-1.5 pl-9 pr-4 text-sm focus:bg-white focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition-all"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+
+                            {/* 상단 액션 버튼들 */}
+                            <div className="flex items-center gap-2">
+                                <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".json" />
+                                
+                                <button onClick={handleReset} className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded border border-gray-300 transition-colors" title="모든 데이터 삭제 및 초기화">
+                                    <RotateCcw className="w-4 h-4" /> <span className="hidden sm:inline">초기화</span>
+                                </button>
+                                
+                                <div className="w-px h-6 bg-gray-300 mx-1 hidden sm:block"></div>
+
+                                <button onClick={handleImportClick} className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded border border-gray-300 transition-colors">
+                                    <Upload className="w-4 h-4" /> <span className="hidden sm:inline">불러오기</span>
+                                </button>
+                                <button onClick={handleExport} className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded border border-gray-300 transition-colors">
+                                    <Download className="w-4 h-4" /> <span className="hidden sm:inline">저장하기</span>
+                                </button>
+                                
+                                <div className="w-px h-6 bg-gray-300 mx-1 hidden sm:block"></div>
+                                
+                                <button 
+                                    onClick={() => {
+                                        const initialGroup = selectedGroup === '전체' ? (groups.find(g => g !== '전체') || groups[0]) : selectedGroup;
+                                        setFormData(prev => ({ ...prev, group: initialGroup }));
+                                        setIsModalOpen(true);
+                                    }}
+                                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded text-sm font-bold flex items-center gap-1 shadow-sm transition-colors"
+                                >
+                                    <Plus className="w-4 h-4" /> 추가
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* --- 메인 영역 --- */}
+                    <div className="flex-1 max-w-[1600px] w-full mx-auto px-4 py-6 flex flex-col gap-4">
+                        
+                        {/* 그룹 탭 */}
+                        <div className="flex items-center justify-between border-b border-gray-300 pb-1 overflow-hidden">
+                            <div className="flex gap-1 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide items-end">
+                                {groups.map(group => (
+                                    <div key={group} className="relative group/tab">
+                                        {editingGroup === group ? (
+                                            <input
+                                                autoFocus
+                                                type="text"
+                                                className="px-3 py-2 text-sm font-medium rounded-t-lg border border-green-500 text-gray-900 bg-white outline-none w-32 shadow-sm z-20 relative top-px"
+                                                value={tempGroupName}
+                                                onChange={(e) => setTempGroupName(e.target.value)}
+                                                onBlur={saveGroupRename}
+                                                onKeyDown={(e) => e.key === 'Enter' && saveGroupRename()}
+                                            />
+                                        ) : (
+                                            <div 
+                                                className={`flex items-center px-4 py-2 text-sm font-medium rounded-t-lg border-t border-l border-r transition-all whitespace-nowrap cursor-pointer select-none ${
+                                                    selectedGroup === group 
+                                                    ? 'tab-active' 
+                                                    : 'tab-inactive'
+                                                }`}
+                                                onClick={() => setSelectedGroup(group)}
+                                                onDoubleClick={() => startGroupRename(group)}
+                                            >
+                                                <span className="mr-1">{group}</span>
+                                                
+                                                {/* 활성 탭이고 '전체'가 아닐 때만 관리 버튼 표시 */}
+                                                {selectedGroup === group && group !== '전체' && (
+                                                    <div className="flex items-center gap-1 ml-2 pl-2 border-l border-gray-300">
+                                                        <button 
+                                                            onClick={(e) => { e.stopPropagation(); startGroupRename(group); }}
+                                                            className="p-0.5 hover:bg-gray-100 rounded text-gray-400 hover:text-blue-600 transition-colors"
+                                                            title="이름 변경"
+                                                        >
+                                                            <Edit2 className="w-3 h-3" />
+                                                        </button>
+                                                        <button 
+                                                            onClick={(e) => { e.stopPropagation(); handleDeleteGroup(group); }}
+                                                            className="p-0.5 hover:bg-gray-100 rounded text-gray-400 hover:text-red-600 transition-colors"
+                                                            title="그룹 삭제"
+                                                        >
+                                                            <Trash2 className="w-3 h-3" />
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                                <button onClick={() => setIsGroupModalOpen(true)} className="ml-1 mb-1 p-1.5 text-gray-400 hover:text-green-600 hover:bg-gray-100 rounded transition-colors" title="새 그룹 추가">
+                                    <FolderPlus className="w-4 h-4" />
+                                </button>
+                            </div>
+                            <div className="text-xs text-gray-500 font-medium whitespace-nowrap hidden sm:block ml-4 pb-1">
+                                총 {filteredBookmarks.length}개 항목
+                            </div>
+                        </div>
+
+                        {/* --- 엑셀 스타일 테이블 리스트 --- */}
+                        <div className="bg-white border border-gray-300 rounded-sm shadow-sm overflow-x-auto flex-1 flex flex-col">
+                            <table className="w-full text-sm text-left border-collapse min-w-[800px]">
+                                <thead className="bg-gray-50 text-gray-600 font-semibold border-b border-gray-300">
+                                    <tr>
+                                        <th className="py-2 px-4 w-24 border-r border-gray-200">그룹</th>
+                                        <th className="py-2 px-4 w-1/3 border-r border-gray-200">제목</th>
+                                        <th className="py-2 px-4 w-1/4 border-r border-gray-200">URL</th>
+                                        <th className="py-2 px-4 w-32 border-r border-gray-200">아이디</th>
+                                        <th className="py-2 px-4 w-32 border-r border-gray-200">비밀번호</th>
+                                        <th className="py-2 px-4 w-24 text-center">관리</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {filteredBookmarks.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="6" className="py-20 text-center text-gray-400">
+                                                데이터가 없습니다.
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        filteredBookmarks.map((bm) => (
+                                            <tr key={bm.id} className={`hover:bg-blue-50 transition-colors ${editingId === bm.id ? 'bg-yellow-50' : ''}`}>
+                                                
+                                                {/* 1. 그룹 컬럼 */}
+                                                <td className="p-2 border-r border-gray-100">
+                                                    {editingId === bm.id ? (
+                                                        <select 
+                                                            className="w-full border border-gray-300 rounded px-1 py-1 text-sm outline-none focus:border-green-500"
+                                                            value={editFormData.group}
+                                                            onChange={e => setEditFormData({...editFormData, group: e.target.value})}
+                                                        >
+                                                            {groups.filter(g=>g!=='전체').map(g=><option key={g} value={g}>{g}</option>)}
+                                                        </select>
+                                                    ) : (
+                                                        <span className="inline-block px-2 py-0.5 rounded bg-gray-100 text-xs font-medium text-gray-600">
+                                                            {bm.group}
+                                                        </span>
+                                                    )}
+                                                </td>
+
+                                                {/* 2. 제목 컬럼 */}
+                                                <td className="p-2 border-r border-gray-100">
+                                                    {editingId === bm.id ? (
+                                                        <input 
+                                                            type="text" className="w-full border border-gray-300 rounded px-2 py-1 outline-none focus:border-green-500"
+                                                            value={editFormData.title} onChange={e => setEditFormData({...editFormData, title: e.target.value})}
+                                                        />
+                                                    ) : (
+                                                        <a 
+                                                            href={bm.url} 
+                                                            target="_blank" 
+                                                            rel="noreferrer" 
+                                                            className="font-medium text-gray-800 hover:text-green-600 hover:underline block truncate cursor-pointer"
+                                                            title={bm.url}
+                                                        >
+                                                            {bm.title}
+                                                        </a>
+                                                    )}
+                                                </td>
+
+                                                {/* 3. URL 컬럼 */}
+                                                <td className="p-2 border-r border-gray-100">
+                                                    {editingId === bm.id ? (
+                                                        <input 
+                                                            type="text" className="w-full border border-gray-300 rounded px-2 py-1 outline-none focus:border-green-500"
+                                                            value={editFormData.url} onChange={e => setEditFormData({...editFormData, url: e.target.value})}
+                                                        />
+                                                    ) : (
+                                                        <a href={bm.url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline flex items-center gap-1 truncate max-w-[250px]">
+                                                            <ExternalLink className="w-3 h-3 shrink-0" />
+                                                            {bm.url}
+                                                        </a>
+                                                    )}
+                                                </td>
+
+                                                {/* 4. 아이디 컬럼 */}
+                                                <td className="p-2 border-r border-gray-100">
+                                                    {editingId === bm.id ? (
+                                                        <input 
+                                                            type="text" className="w-full border border-gray-300 rounded px-2 py-1 outline-none focus:border-green-500"
+                                                            value={editFormData.userId} onChange={e => setEditFormData({...editFormData, userId: e.target.value})}
+                                                        />
+                                                    ) : (
+                                                        <div className="flex items-center justify-between group/cell">
+                                                            <span className="truncate max-w-[110px]">{bm.userId}</span>
+                                                            {bm.userId && (
+                                                                <button onClick={() => copyToClipboard(bm.userId)} className="opacity-0 group-hover/cell:opacity-100 p-1 text-gray-400 hover:text-blue-600 transition-opacity">
+                                                                    <Copy className="w-3 h-3" />
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </td>
+
+                                                {/* 5. 비밀번호 컬럼 */}
+                                                <td className="p-2 border-r border-gray-100">
+                                                    {editingId === bm.id ? (
+                                                        <div className="relative">
+                                                            <input 
+                                                                type={showPassword['edit'] ? "text" : "password"} 
+                                                                className="w-full border border-gray-300 rounded px-2 py-1 outline-none focus:border-green-500"
+                                                                value={editFormData.password} onChange={e => setEditFormData({...editFormData, password: e.target.value})}
+                                                            />
+                                                            <button 
+                                                                type="button"
+                                                                onClick={() => setShowPassword({...showPassword, 'edit': !showPassword['edit']})}
+                                                                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400"
+                                                            >
+                                                                {showPassword['edit'] ? <EyeOff className="w-3 h-3"/> : <Eye className="w-3 h-3"/>}
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-center justify-between group/cell">
+                                                            <span className="font-mono text-xs">
+                                                                {showPassword[bm.id] ? bm.password : '••••••••'}
+                                                            </span>
+                                                            <div className="flex items-center opacity-0 group-hover/cell:opacity-100 transition-opacity">
+                                                                <button onClick={() => setShowPassword({...showPassword, [bm.id]: !showPassword[bm.id]})} className="p-1 text-gray-400 hover:text-blue-600">
+                                                                    {showPassword[bm.id] ? <EyeOff className="w-3 h-3"/> : <Eye className="w-3 h-3"/>}
+                                                                </button>
+                                                                <button onClick={() => copyToClipboard(bm.password)} className="p-1 text-gray-400 hover:text-blue-600">
+                                                                    <Copy className="w-3 h-3" />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </td>
+
+                                                {/* 6. 관리 액션 버튼 */}
+                                                <td className="p-2 text-center">
+                                                    {editingId === bm.id ? (
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <button onClick={saveEditing} className="p-1 bg-green-100 text-green-700 rounded hover:bg-green-200" title="저장">
+                                                                <Save className="w-4 h-4" />
+                                                            </button>
+                                                            <button onClick={() => setEditingId(null)} className="p-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200" title="취소">
+                                                                <X className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <button onClick={() => startEditing(bm)} className="p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors" title="수정">
+                                                                <Edit2 className="w-4 h-4" />
+                                                            </button>
+                                                            <button onClick={() => handleDelete(bm.id)} className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors" title="삭제">
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {/* --- 피드백 토스트 메시지 --- */}
+                    {copyFeedback && (
+                        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded shadow-lg z-50 flex items-center gap-2 text-sm animate-bounce">
+                            <Check className="w-4 h-4 text-green-400" />
+                            <span>{copyFeedback}</span>
+                        </div>
+                    )}
+
+                    {/* --- 추가 모달 (신규 등록용) --- */}
+                    {isModalOpen && (
+                        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                            <div className="bg-white rounded-lg shadow-xl w-full max-w-md animate-fade-in-up">
+                                <div className="p-4 border-b flex justify-between items-center">
+                                    <h3 className="font-bold text-lg">새 항목 추가</h3>
+                                    <button onClick={() => setIsModalOpen(false)}><X className="w-5 h-5 text-gray-400"/></button>
+                                </div>
+                                <form onSubmit={handleSubmitNew} className="p-5 space-y-4">
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-500 mb-1 block">제목</label>
+                                        <input required type="text" className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500 outline-none" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-500 mb-1 block">URL</label>
+                                        <input required type="url" className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500 outline-none" value={formData.url} onChange={e => setFormData({...formData, url: e.target.value})} />
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <div className="flex-1">
+                                            <label className="text-xs font-bold text-gray-500 mb-1 block">아이디</label>
+                                            <input type="text" className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500 outline-none" value={formData.userId} onChange={e => setFormData({...formData, userId: e.target.value})} />
+                                        </div>
+                                        <div className="flex-1">
+                                            <label className="text-xs font-bold text-gray-500 mb-1 block">비밀번호</label>
+                                            <input type="password" className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500 outline-none" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-500 mb-1 block">그룹</label>
+                                        <select className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-green-500 outline-none" value={formData.group} onChange={e => setFormData({...formData, group: e.target.value})}>
+                                            {groups.filter(g=>g!=='전체').map(g=><option key={g} value={g}>{g}</option>)}
+                                        </select>
+                                    </div>
+                                    <button type="submit" className="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-700 transition-colors">등록하기</button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* --- 그룹 추가 모달 --- */}
+                    {isGroupModalOpen && (
+                        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                            <div className="bg-white rounded-lg shadow-xl w-full max-w-xs p-4 animate-fade-in-up">
+                                <div className="flex justify-between items-center mb-3">
+                                    <h3 className="font-bold">그룹 추가</h3>
+                                    <button onClick={() => setIsGroupModalOpen(false)}><X className="w-4 h-4 text-gray-400"/></button>
+                                </div>
+                                <div className="space-y-3">
+                                    <input autoFocus type="text" className="border border-gray-300 p-2 rounded w-full outline-none focus:border-green-500" placeholder="새 그룹 이름" value={newGroupName} onChange={e => setNewGroupName(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleAddGroup()} />
+                                    <div className="flex gap-2">
+                                        <button onClick={() => setIsGroupModalOpen(false)} className="flex-1 bg-gray-100 text-gray-700 py-2 rounded text-sm hover:bg-gray-200 transition-colors">취소</button>
+                                        <button onClick={handleAddGroup} className="flex-1 bg-green-600 text-white py-2 rounded text-sm hover:bg-green-700 transition-colors font-medium">확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
