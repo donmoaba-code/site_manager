@@ -1,0 +1,1018 @@
+{
+  "bookmarks": [
+    {
+      "id": 1779203638530,
+      "title": "오성 수집닷컴",
+      "url": "https://www.soojip.com/",
+      "userId": "",
+      "password": "",
+      "group": "국내판매",
+      "createdAt": 1780761392316
+    },
+    {
+      "id": 1779203638529,
+      "title": "오성옥션",
+      "url": "https://www.soojip.com/auction/offline_auction_list.php?catenum=51",
+      "userId": "",
+      "password": "",
+      "group": "국내판매",
+      "createdAt": 1780761360643
+    },
+    {
+      "id": 1779203638528,
+      "title": "독일eBay-한국지폐",
+      "url": "https://www.ebay.de/sch/i.html?_nkw=Papiergeld+Welt+S%C3%BCdkorea&_from=R40&_sop=16&_oac=1&_pgn=1",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1780758124073
+    },
+    {
+      "id": 1779203638527,
+      "title": "디즈니달러",
+      "url": "https://www.ebay.com/sch/i.html?_from=R40&_nkw=disney+dollars&_sacat=0&rt=nc&LH_Auction=1",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1780756909177
+    },
+    {
+      "id": 1779203638526,
+      "title": "전세계(uncirculated,unc,aunc,au,cu,mint)",
+      "url": "https://www.ebay.com/sch/3411/i.html?_nkw=%28uncirculated%2Cunc%2Caunc%2Cau%2Ccu%2Cmint%29+&_saact=1&LH_AvailTo=1&LH_Auction=1&_sop=5",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1780756882723
+    },
+    {
+      "id": 1779203638525,
+      "title": "미국만배송 (uncirculated,unc,aunc,au,cu,mint)",
+      "url": "https://www.ebay.com/sch/3411/i.html?_nkw=%28uncirculated%2Cunc%2Caunc%2Cau%2Ccu%2Cmint%29&LH_Auction=1&LH_PrefLoc=1&_sop=1",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1780756832173
+    },
+    {
+      "id": 1779203638524,
+      "title": "한국지폐카타로그",
+      "url": "https://www.ebay.com/sch/i.html?_nkw=korea&_sacat=11116&_sop=10",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1780756763457
+    },
+    {
+      "id": 1779203638420,
+      "title": "Numismatic Auctions: coins, medals & other valuables",
+      "url": "https://www.numisbids.com/searchall?searchall=korea",
+      "userId": "",
+      "password": "",
+      "group": "외국경매",
+      "createdAt": 1780465170637
+    },
+    {
+      "id": 1779203638421,
+      "title": "NumisBids: Your Portal for Numismatic Auctions",
+      "url": "https://www.sixbid.com/en/lots/page/1/perPage/100?term=korea&currency=EUR&groupByAuction=1",
+      "userId": "",
+      "password": "",
+      "group": "외국경매",
+      "createdAt": 1780465161639
+    },
+    {
+      "id": 1779203638422,
+      "title": "biddr.com - the modern auction platform for numismatic items",
+      "url": "https://www.biddr.com/search?s=korea&c=&pf=&pt=&pc=EUR",
+      "userId": "",
+      "password": "",
+      "group": "외국경매",
+      "createdAt": 1780465151167
+    },
+    {
+      "id": 1779203638423,
+      "title": "Lyn Knight Auctions",
+      "url": "https://www.lynknight.com/worldpaper/home",
+      "userId": "",
+      "password": "",
+      "group": "외국경매",
+      "createdAt": 1780465135064
+    },
+    {
+      "id": 1779203638424,
+      "title": "CGB Numismatics",
+      "url": "https://www.cgbfr.com",
+      "userId": "",
+      "password": "",
+      "group": "외국경매",
+      "createdAt": 1780465124083
+    },
+    {
+      "id": 1779203638425,
+      "title": "와이즈 (Wise) — 해외 송금 및 실물 환전용",
+      "url": "https://wise.com/kr/currency-converter/currencies",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1780464724440
+    },
+    {
+      "id": 1779203638426,
+      "title": "온다(Oanda)-Currency Converter | Foreign Exchange Rates",
+      "url": "https://www.oanda.com/currency-converter/en/?from=EUR&to=USD&amount=1",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1780464713662
+    },
+    {
+      "id": 1779203638427,
+      "title": "온다(Oanda)-과거 환율 변환기",
+      "url": "https://fxds-hcc.oanda.com/lang/ko",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1780464701926
+    },
+    {
+      "id": 1779203638428,
+      "title": "인베스팅닷컴 (Investing.com) — 실시간 금융 투자자용",
+      "url": "https://kr.investing.com/currencies/",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1780464690398
+    },
+    {
+      "id": 1779203638429,
+      "title": "한국무역협회-KITA.NE-환율종합",
+      "url": "https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1780464678637
+    },
+    {
+      "id": 1779203638430,
+      "title": "다음 환율 조회",
+      "url": "https://finance.daum.net/exchanges",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1780464649461
+    },
+    {
+      "id": 1779203638431,
+      "title": "서울외국환중개 - 오늘의 환율 조회 서울외국환중개",
+      "url": "http://www.smbs.biz/ExRate/TodayExRate.jsp",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1780464164266
+    },
+    {
+      "id": 1779203638432,
+      "title": "강촌닷컴",
+      "url": "https://gangchon.com/mts_main_view.php",
+      "userId": "",
+      "password": "",
+      "group": "국내판매",
+      "createdAt": 1779203638181
+    },
+    {
+      "id": 1779203638433,
+      "title": "배경지우는 프로그램",
+      "url": "https://www.adobe.com/kr/express/feature/image/remove-background",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1779199804043
+    },
+    {
+      "id": 1779203638434,
+      "title": "Baymag(이베이맥)은 이베이에서 제공하는 다국가 리스팅 지원 툴로, eBay US(이베이닷컴)에 등록한 상품을 영국, 독일, 프랑스, 호주, 캐나다, 이탈리아, 스페인 등 7개 현지 이베이 사이트에 자동으로 동시 리스팅",
+      "url": "https://ebaymag.com/stock",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1773205512981
+    },
+    {
+      "id": 1779203638435,
+      "title": "PCGS 검증확인",
+      "url": "https://www.pcgsasia.com/?l=ko",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1772711258594
+    },
+    {
+      "id": 1779203638436,
+      "title": "ebay종료된판매내역",
+      "url": "file://D:/[YSKTOOLS]/ebay%EC%A3%BC%EB%AC%B8%EB%82%B4%EC%97%AD%EC%B6%94%EC%B6%9C/eBay%ED%8C%90%EB%A7%A4%EB%82%B4%EC%97%AD%EC%B6%94%EC%B6%9C%EA%B8%B0_Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1771757526638
+    },
+    {
+      "id": 1779203638437,
+      "title": "온라인 툴킷",
+      "url": "https://onlinetoolkit.co/ko/category/converter/",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1771129587652
+    },
+    {
+      "id": 1779203638438,
+      "title": "Convert convert.app›Unit›Mass›Gram to Microgram",
+      "url": "https://convert.app/ko/mass/ounce-to-gram/",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1771129538495
+    },
+    {
+      "id": 1779203638439,
+      "title": "모두를위한 무료 수학 단위 변환기",
+      "url": "https://citizenmaths.com/ko/",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1771129482641
+    },
+    {
+      "id": 1779203638440,
+      "title": "단위 변환기 - CalculatorLib",
+      "url": "https://calculatorlib.com/ko/unit-converter",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1771129314414
+    },
+    {
+      "id": 1779203638441,
+      "title": "온라인 계산기 및 도구 - RT",
+      "url": "https://www.rapidtables.org/ko/",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1771129258936
+    },
+    {
+      "id": 1779203638442,
+      "title": "온라인 계산기 및 도구 - RT",
+      "url": "https://www.rapidtables.org/ko/convert/index.html",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1771129220496
+    },
+    {
+      "id": 1779203638443,
+      "title": "Util Monster - 무료 온라인 유틸리티 및 계산기 | 유틸몬스터",
+      "url": "https://util.monster/calculators/",
+      "userId": "",
+      "password": "",
+      "group": "변환계산기",
+      "createdAt": 1771129151339
+    },
+    {
+      "id": 1779203638444,
+      "title": "금속선물 가격  Investing.com 한국어 https://kr.inves",
+      "url": "https://kr.investing.com/commodities/metals",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1771128257849
+    },
+    {
+      "id": 1779203638445,
+      "title": "조달청-국제원자재시장동향 - 비철금속국제가격",
+      "url": "https://www.pps.go.kr/bichuk/bbs/list.do?key=00823&key=01285",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1771127989076
+    },
+    {
+      "id": 1779203638446,
+      "title": "한국비철금속협회 통계정보>LME시세",
+      "url": "https://www.nonferrous.or.kr/stats/?act=sub3",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1771127900206
+    },
+    {
+      "id": 1779203638447,
+      "title": "Gold Price Tracker",
+      "url": "https://gold-price.info/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770994997574
+    },
+    {
+      "id": 1779203638448,
+      "title": "eBay Purchases내역추출",
+      "url": "file://D:/[YSKTOOLS]/ebay%EC%A3%BC%EB%AC%B8%EB%82%B4%EC%97%AD%EC%B6%94%EC%B6%9C/eBay_Purchases_Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1770641709199
+    },
+    {
+      "id": 1779203638449,
+      "title": "ebay Order details추출",
+      "url": "file://D:/[YSKTOOLS]/ebay%EC%A3%BC%EB%AC%B8%EB%82%B4%EC%97%AD%EC%B6%94%EC%B6%9C/ebay_Order%20details_Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1770641663981
+    },
+    {
+      "id": 1779203638450,
+      "title": "한림대성심병원평촌-검사기록지발급",
+      "url": "https://www.medchart.kr/servlet/HPLOGIN?COMMAND=LOGOUT",
+      "userId": "",
+      "password": "",
+      "group": "개인",
+      "createdAt": 1770564250273
+    },
+    {
+      "id": 1779203638451,
+      "title": "돈모아라벨인쇄기",
+      "url": "file://D:/[YSKTOOLS]/%EB%8F%88%EB%AA%A8%EC%95%84%EB%9D%BC%EB%B2%A8%EC%9D%B8%EC%87%84%EA%B8%B0/Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1770303590271
+    },
+    {
+      "id": 1779203638452,
+      "title": "SQLite파일조회",
+      "url": "file://D:/[YSKTOOLS]/SQLite%20%ED%8C%8C%EC%9D%BC%20%EC%9D%B8%EB%8D%B1%EC%8A%A4%20%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80/SQLite%20%ED%8C%8C%EC%9D%BC%20%EC%9D%B8%EB%8D%B1%EC%8A%A4%20%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80v19.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1770303506426
+    },
+    {
+      "id": 1779203638453,
+      "title": "JSON파일편집",
+      "url": "file://D:/[YSKTOOLS]/json%ED%8E%B8%EC%A7%91%EA%B8%B0/json_editerv17.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1770303452440
+    },
+    {
+      "id": 1779203638454,
+      "title": "이미지합치기",
+      "url": "file://D:/[YSKTOOLS]/%EC%9D%B4%EB%AF%B8%EC%A7%80%EA%B2%B0%ED%95%A9%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8/%EC%9D%B4%EB%AF%B8%EC%A7%80%20%ED%95%A9%EC%B9%98%EA%B8%B0003.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1770303398101
+    },
+    {
+      "id": 1779203638455,
+      "title": "사이트관리",
+      "url": "file://D:/[YSKTOOLS]/%EC%82%AC%EC%9D%B4%ED%8A%B8%EB%A7%A4%EB%8B%88%EC%A0%80/%EC%82%AC%EC%9D%B4%ED%8A%B8%EB%A7%A4%EB%8B%88%EC%A0%80001.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1770303291367
+    },
+    {
+      "id": 1779203638456,
+      "title": "지디컬렉션",
+      "url": "https://gdcollection.co.kr/",
+      "userId": "",
+      "password": "",
+      "group": "국내판매",
+      "createdAt": 1770089543793
+    },
+    {
+      "id": 1779203638457,
+      "title": "wayful.com-99.99 은(銀) 달러 가격 - 1그람 시세 (1g/USD) 1키로 시세 (1kg)",
+      "url": "https://gold.wayful.com/2021/01/silver-1g-1kg-1oz-price-in-USD-today.html",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770015317481
+    },
+    {
+      "id": 1779203638458,
+      "title": "wayful.com",
+      "url": "https://www.wayful.com/p/xagusd-silver-price-live-chart.html",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770015215868
+    },
+    {
+      "id": 1779203638459,
+      "title": "국민은행 은1kg가격",
+      "url": "https://obank.kbstar.com/quics?page=C039209",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770015170936
+    },
+    {
+      "id": 1779203638460,
+      "title": "GoldKimp_금프리미엄닷컴_은시세",
+      "url": "https://goldkimp.com/live-silver-price-chart/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770015084466
+    },
+    {
+      "id": 1779203638461,
+      "title": "오늘의 실시간 은 시세 (미국)",
+      "url": "https://www.exchange-rates.org/ko/precious-metals/silver-price/united-states",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770015040793
+    },
+    {
+      "id": 1779203638462,
+      "title": "미국 의 오늘 은 가격 | GoldRate",
+      "url": "https://goldrate.com/ko/silver/united-states",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014992004
+    },
+    {
+      "id": 1779203638463,
+      "title": "토스뱅크은시세",
+      "url": "https://www.tossinvest.com/indices/RFU.SIv1",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014946995
+    },
+    {
+      "id": 1779203638464,
+      "title": "알파스퀘어",
+      "url": "https://alphasquare.co.kr/home/stock-summary?code=XAG/USD",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014910109
+    },
+    {
+      "id": 1779203638465,
+      "title": "Mitrade",
+      "url": "https://www.mitrade.com/kr/insights/markets/commodities/XAGUSD",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014874820
+    },
+    {
+      "id": 1779203638466,
+      "title": "Trading Economics",
+      "url": "https://ko.tradingeconomics.com/commodity/silver",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014847971
+    },
+    {
+      "id": 1779203638467,
+      "title": "investing국제은시세",
+      "url": "https://kr.investing.com/commodities/silver",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014697180
+    },
+    {
+      "id": 1779203638468,
+      "title": "국제금거래소(한국)",
+      "url": "https://www.usgold.co.kr/index.html?m_code=102000000",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014609255
+    },
+    {
+      "id": 1779203638469,
+      "title": "국제표준거래소(한국)",
+      "url": "https://www.goodgold.co.kr/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014518446
+    },
+    {
+      "id": 1779203638470,
+      "title": "investing국제금시세",
+      "url": "https://kr.investing.com/commodities/gold",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014430124
+    },
+    {
+      "id": 1779203638471,
+      "title": "(주)국제금거래소(한국)",
+      "url": "https://www.intergold.co.kr/main/index.php",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1770014386869
+    },
+    {
+      "id": 1779203638472,
+      "title": "사진합치기",
+      "url": "file://D:/[YSKTOOLS]/%EC%9D%B4%EB%AF%B8%EC%A7%80%ED%95%A9%EC%B9%98%EA%B8%B02026/%EC%9D%B4%EB%AF%B8%EC%A7%80%ED%95%A9%EC%B9%98%EA%B8%B02026-16.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1769235549611
+    },
+    {
+      "id": 1779203638473,
+      "title": "금·은·플래티넘 등 귀금속과 코인 수집에 관한 교육용 정보 허브",
+      "url": "https://learn.apmex.com/",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1769173887471
+    },
+    {
+      "id": 1779203638474,
+      "title": "Numiis(누미이스)-전 세계 동전·지폐 수집가를 위한 대형 온라인 누미스마틱(화폐 수집) 데이터베이스 플랫폼",
+      "url": "https://www.numiis.com/",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1769173819441
+    },
+    {
+      "id": 1779203638475,
+      "title": "미국에서 가장 영향력 있는 온라인 코인 뉴스·해설·교육 플랫폼",
+      "url": "https://coinweek.com/",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1769173715504
+    },
+    {
+      "id": 1779203638476,
+      "title": "미국의 전문 수집가이자 연구자, 저자, 그리고 프로페셔널 누미스마티스트(Numismatist)인 W. David Perkins가 운영하는 희귀 초기 미국 주화 전문 딜러 사이트",
+      "url": "https://www.davidperkinsrarecoins.com/",
+      "userId": "",
+      "password": "",
+      "group": "외국판매",
+      "createdAt": 1769173643551
+    },
+    {
+      "id": 1779203638477,
+      "title": "CoinTalk-세계적으로 가장 활발한 온라인 동전·지폐 수집 포럼",
+      "url": "https://www.cointalk.com/",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1769173536872
+    },
+    {
+      "id": 1779203638478,
+      "title": "GreatCollections-미국의 대표적인 동전·지폐 경매 전문 플랫폼",
+      "url": "https://www.greatcollections.com/Auction-Archive/US-Coin-Prices/12/Half-Dollars/45/Capped-Bust-Half-Dollars/39957/18361336-Capped-Bust-Half-Dollar-Overton-108a-Lettered-Edge?af_c_sorthigh=true&af_c_sortdate=false&af_c_pcgs=true&af_c_cacg=true&af_c_ngc=true&af_c_pmg=true&af_c_anacs=true&af_c_legacy=true&af_c_other=true&af_c_plus=true&af_c_nonplus=true&af_c_cac=true&af_c_noncac=true&af_c_ungraded=false&af_c_busi_strike=true&af_c_spec_proof=true&af_s_yearfrom=&af_s_yearto=&af_s_keywords=&af_gd_min=1&af_gd_max=70",
+      "userId": "",
+      "password": "",
+      "group": "외국판매",
+      "createdAt": 1769173462197
+    },
+    {
+      "id": 1779203638479,
+      "title": "mark.mmvns.com-종합 온라인 쇼핑몰-주화",
+      "url": "https://mark.mmvns.com/index.php?route=product/category&path=1007_1329",
+      "userId": "",
+      "password": "",
+      "group": "외국판매",
+      "createdAt": 1769173296097
+    },
+    {
+      "id": 1779203638480,
+      "title": "mark.mmvns.com-종합 온라인 쇼핑몰-지폐",
+      "url": "https://mark.mmvns.com/index.php?route=product/category&path=1007_1492",
+      "userId": "",
+      "password": "",
+      "group": "외국판매",
+      "createdAt": 1769173273971
+    },
+    {
+      "id": 1779203638481,
+      "title": "Rare Coin Wholesalers(레어 코인 홀세일러스)-희귀 동전 전문 딜러 회사",
+      "url": "https://www.rarecoinwholesalers.com/",
+      "userId": "",
+      "password": "",
+      "group": "외국판매",
+      "createdAt": 1769173097571
+    },
+    {
+      "id": 1779203638482,
+      "title": "Numista(누미스타)-세계적인 온라인 동전·지폐 수집가 커뮤니티 플랫폼",
+      "url": "https://en.numista.com/",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1769172977501
+    },
+    {
+      "id": 1779203638483,
+      "title": "PCGS그레이딩",
+      "url": "https://www.pcgs.com/",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1769172908731
+    },
+    {
+      "id": 1779203638484,
+      "title": "PMG/NGC그레이딩서비스-전 세계수집가들을 위한 활발한 온라인 커뮤니티",
+      "url": "https://notes.www.collectors-society.com/",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1769172806603
+    },
+    {
+      "id": 1779203638485,
+      "title": "PMG지폐그레이딩",
+      "url": "https://www.pmgnotes.com/",
+      "userId": "donmoaba@naver.com",
+      "password": "cR5!7g@kxGepCHaT",
+      "group": "화폐정보",
+      "createdAt": 1769172655701
+    },
+    {
+      "id": 1779203638486,
+      "title": "NGC주화그레이딩",
+      "url": "https://www.ngccoin.com/",
+      "userId": "",
+      "password": "",
+      "group": "화폐정보",
+      "createdAt": 1769172069187
+    },
+    {
+      "id": 1779203638487,
+      "title": "여의도 금거래소-금화,은화판매",
+      "url": "https://yeouidogold.com/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768908619436
+    },
+    {
+      "id": 1779203638488,
+      "title": "한국 금거래소",
+      "url": "https://www.koreagoldx.co.kr/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768674067106
+    },
+    {
+      "id": 1779203638489,
+      "title": "금시세닷컴",
+      "url": "https://www.kumsise.com/main/index.php",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768674053934
+    },
+    {
+      "id": 1779203638490,
+      "title": "삼성금거래소",
+      "url": "https://samsunggold.co.kr/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768674037702
+    },
+    {
+      "id": 1779203638491,
+      "title": "국제금거래소",
+      "url": "https://www.intergold.co.kr/main/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768674025152
+    },
+    {
+      "id": 1779203638492,
+      "title": "순금나라",
+      "url": "https://www.soongumnara.co.kr/?agencyCode=",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768674010980
+    },
+    {
+      "id": 1779203638493,
+      "title": "KITCO Live Charts / gold",
+      "url": "https://www.kitco.com/charts/gold",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768673948775
+    },
+    {
+      "id": 1779203638494,
+      "title": "Gold price Today 한국금시세",
+      "url": "https://pricegold.net/kr-south-korea/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768673867106
+    },
+    {
+      "id": 1779203638495,
+      "title": "GoldPrice",
+      "url": "https://goldprice.org/",
+      "userId": "",
+      "password": "",
+      "group": "금은시세",
+      "createdAt": 1768673841426
+    },
+    {
+      "id": 1779203638496,
+      "title": "ebay말레이시아",
+      "url": "https://www.ebay.com.my/",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503287184
+    },
+    {
+      "id": 1779203638497,
+      "title": "ebay홍콩",
+      "url": "https://www.ebay.com.hk/",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503254926
+    },
+    {
+      "id": 1779203638498,
+      "title": "ebay벨기에",
+      "url": "https://www.benl.ebay.be/",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503241103
+    },
+    {
+      "id": 1779203638499,
+      "title": "ebay네덜란드",
+      "url": "https://www.ebay.nl/",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503219398
+    },
+    {
+      "id": 1779203638500,
+      "title": "ebay스페인",
+      "url": "https://www.ebay.es/",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503184420
+    },
+    {
+      "id": 1779203638501,
+      "title": "ebay오스트리아",
+      "url": "https://www.ebay.at/b/Munzen/11116/bn_1844905",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503169937
+    },
+    {
+      "id": 1779203638502,
+      "title": "ebay이탈리아",
+      "url": "https://www.ebay.it",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503114990
+    },
+    {
+      "id": 1779203638503,
+      "title": "ebay한국",
+      "url": "https://www.ebay.co.kr/",
+      "userId": "",
+      "password": "",
+      "group": "업무",
+      "createdAt": 1768503098361
+    },
+    {
+      "id": 1779203638504,
+      "title": "ebay캐나다",
+      "url": "https://www.ebay.ca",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503080386
+    },
+    {
+      "id": 1779203638505,
+      "title": "ebay호주",
+      "url": "https://www.ebay.com.au",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503062689
+    },
+    {
+      "id": 1779203638506,
+      "title": "ebay독일",
+      "url": "https://www.ebay.at/b/Munzen/11116/bn_1844905",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503037642
+    },
+    {
+      "id": 1779203638507,
+      "title": "ebay프랑스",
+      "url": "https://www.ebay.fr/",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503021112
+    },
+    {
+      "id": 1779203638508,
+      "title": "ebay영국",
+      "url": "https://www.ebay.co.uk/",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768503003690
+    },
+    {
+      "id": 1779203638509,
+      "title": "ebay미국",
+      "url": "https://www.ebay.ccom",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768502989060
+    },
+    {
+      "id": 1779203638510,
+      "title": "ebay검색프랑스",
+      "url": "https://picclick.fr/",
+      "userId": "",
+      "password": "",
+      "group": "업무",
+      "createdAt": 1768502900189
+    },
+    {
+      "id": 1779203638511,
+      "title": "ebay검색독일",
+      "url": "https://picclick.de/",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768502814311
+    },
+    {
+      "id": 1779203638512,
+      "title": "ebay검색미국",
+      "url": "https://picclick.com",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768502134693
+    },
+    {
+      "id": 1779203638513,
+      "title": "ebay검색기",
+      "url": "file://D:/[YSKTOOLS]/eBay%EA%B2%80%EC%83%89%ED%88%B4/eBay%20Search%20Tool006.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1768502043181
+    },
+    {
+      "id": 1779203638514,
+      "title": "수집뱅크검색",
+      "url": "file:///D:/[YSKTOOLS]/%EC%88%98%EC%A7%91%EB%B1%85%ED%81%AC%EA%B2%80%EC%83%89%ED%88%B4/Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1768502011467
+    },
+    {
+      "id": 1779203638515,
+      "title": "돈모아검색기",
+      "url": "file:///D:/[YSKTOOLS]/%EB%8F%88%EB%AA%A8%EC%95%84%EA%B2%80%EC%83%89%ED%88%B4/Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1768501967707
+    },
+    {
+      "id": 1779203638516,
+      "title": "화동경매낙찰내역",
+      "url": "file://D:/[YSKTOOLS]/화동옥션스마트관리/Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1768501911969
+    },
+    {
+      "id": 1779203638517,
+      "title": "수집뱅크판매관리",
+      "url": "file://D:/[YSKTOOLS]/수집뱅크%20스마트%20관리%20시스템/Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1768501767297
+    },
+    {
+      "id": 1779203638518,
+      "title": "돈모아판매관리",
+      "url": "file://D:/[YSKTOOLS]/돈모아%20스마트%20관리%20시스템/Index.html",
+      "userId": "",
+      "password": "",
+      "group": "YSK",
+      "createdAt": 1768501734133
+    },
+    {
+      "id": 1779203638519,
+      "title": "stacksbowers낙찰가",
+      "url": "https://archive.stacksbowers.com/?q=5d656cbb-1df8-405a-b4ba-8658deb29360",
+      "userId": "",
+      "password": "",
+      "group": "외국경매",
+      "createdAt": 1768501601698
+    },
+    {
+      "id": 1779203638520,
+      "title": "헤리티지경매 낙찰가검색",
+      "url": "https://currency.ha.com/c/search/results.zx?term=282049&si=2&dept=2021&archive_state=5327&sold_status=1526&mode=archive&page=200%7E1&ic=KeywordSearch-A-K-071316",
+      "userId": "",
+      "password": "",
+      "group": "외국경매",
+      "createdAt": 1768501454067
+    },
+    {
+      "id": 1779203638521,
+      "title": "ebay 검색호주",
+      "url": "https://picclick.com.au",
+      "userId": "",
+      "password": "",
+      "group": "ebay",
+      "createdAt": 1768501399925
+    },
+    {
+      "id": 1779203638522,
+      "title": "Google",
+      "url": "https://google.com",
+      "userId": "user@gmail.com",
+      "password": "password123",
+      "group": "업무",
+      "createdAt": 1777650891539
+    },
+    {
+      "id": 1779203638523,
+      "title": "GitHub",
+      "url": "https://github.com",
+      "userId": "dev_hero",
+      "password": "git_password!",
+      "group": "개발",
+      "createdAt": 1777650881539
+    }
+  ],
+  "groups": [
+    "전체",
+    "업무",
+    "개발",
+    "개인",
+    "쇼핑",
+    "ebay",
+    "외국경매",
+    "외국판매",
+    "국내판매",
+    "YSK",
+    "금은시세",
+    "화폐정보",
+    "변환계산기"
+  ]
+}

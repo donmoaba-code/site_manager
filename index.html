@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스마트 즐겨찾기 Ver 2.0</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green-600: #16a34a;
+      --green-700: #15803d;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --blue-50: #eff6ff;
+      --yellow-50: #fefce8;
+      --red-50: #fef2f2;
+      --red-600: #dc2626;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+    .app { min-height: 100vh; display: flex; flex-direction: column; }
+    .header {
+      background: #fff;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+    .header-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
+    .logo-icon {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      padding: .375rem;
+      border-radius: .375rem;
+      color: #fff;
+      display: flex;
+      box-shadow: 0 1px 3px rgba(217, 119, 6, .35);
+    }
+    .site-icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      margin: 0 auto;
+      border-radius: .375rem;
+      background: var(--gray-100);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .site-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .site-icon-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+    }
+    .site-icon-fallback svg { width: 1.5rem; height: 1.5rem; }
+    .logo h1 { font-size: 1.125rem; font-weight: 700; }
+    .search-wrap { flex: 1; max-width: 36rem; position: relative; }
+    .search-wrap svg {
+      position: absolute;
+      left: .75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      pointer-events: none;
+    }
+    .search-wrap input {
+      width: 100%;
+      background: var(--gray-100);
+      border: 1px solid transparent;
+      border-radius: .375rem;
+      padding: .375rem 1rem .375rem 2.25rem;
+      font-size: .875rem;
+      outline: none;
+    }
+    .search-wrap input:focus {
+      background: #fff;
+      border-color: var(--green-600);
+      box-shadow: 0 0 0 1px var(--green-600);
+    }
+    .header-actions { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
+    .divider { width: 1px; height: 1.5rem; background: var(--gray-300); margin: 0 .25rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .25rem;
+      padding: .375rem .75rem;
+      font-size: .875rem;
+      font-weight: 500;
+      border-radius: .25rem;
+      border: 1px solid var(--gray-300);
+      background: #fff;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .btn:hover { background: var(--gray-100); }
+    .btn svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+    .btn-danger { color: var(--red-600); border-color: var(--gray-300); }
+    .btn-danger:hover { background: var(--red-50); }
+    .btn-primary {
+      background: var(--green-600);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      padding: .375rem 1rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+    .btn-primary:hover { background: var(--green-700); }
+    .btn-icon {
+      padding: .25rem;
+      border: none;
+      background: transparent;
+      color: var(--gray-400);
+      cursor: pointer;
+      border-radius: .25rem;
+      display: inline-flex;
+    }
+    .btn-icon:hover { color: #2563eb; background: var(--blue-50); }
+    .btn-icon.danger:hover { color: var(--red-600); background: var(--red-50); }
+    .btn-icon svg { width: 1rem; height: 1rem; }
+
+    .main {
+      flex: 1;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .tabs-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--gray-300);
+      padding-bottom: .25rem;
+      overflow: hidden;
+    }
+    .tabs { display: flex; gap: .25rem; overflow-x: auto; align-items: flex-end; flex: 1; }
+    .tab {
+      display: flex;
+      align-items: center;
+      padding: .5rem 1rem;
+      font-size: .875rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: .5rem .5rem 0 0;
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+      background: var(--gray-100);
+      color: var(--gray-500);
+      transition: background .15s, color .15s;
+    }
+    .tab:hover { background: var(--gray-200); }
+    .tab.active {
+      background: #fff;
+      border-color: var(--gray-300);
+      border-bottom-color: #fff;
+      color: var(--green-700);
+      margin-bottom: -1px;
+      z-index: 10;
+      position: relative;
+    }
+    .tab-actions {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      margin-left: .5rem;
+      padding-left: .5rem;
+      border-left: 1px solid var(--gray-300);
+    }
+    .tab-actions .btn-icon svg { width: .75rem; height: .75rem; }
+    .tab-rename-input {
+      padding: .5rem .75rem;
+      font-size: .875rem;
+      border: 1px solid var(--green-600);
+      border-radius: .5rem .5rem 0 0;
+      outline: none;
+      width: 8rem;
+      position: relative;
+      top: 1px;
+      z-index: 20;
+    }
+    .tab-add {
+      margin-left: .25rem;
+      margin-bottom: .25rem;
+      padding: .375rem;
+      border: none;
+      background: transparent;
+      color: var(--gray-400);
+      cursor: pointer;
+      border-radius: .25rem;
+    }
+    .tab-add:hover { color: var(--green-600); background: var(--gray-100); }
+    .count-label { font-size: .75rem; color: var(--gray-500); font-weight: 500; white-space: nowrap; margin-left: 1rem; padding-bottom: .25rem; }
+
+    .table-wrap {
+      background: #fff;
+      border: 1px solid var(--gray-300);
+      border-radius: 2px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      overflow-x: hidden;
+      flex: 1;
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      table-layout: fixed;
+      font-size: .8125rem;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    col.col-icon { width: 1.5rem; }
+    col.col-title { width: 30%; }
+    col.col-url { width: 26%; }
+    col.col-userid { width: 7%; }
+    col.col-password { width: 7%; }
+    col.col-group { width: 8%; }
+    col.col-actions { width: 1.0625rem; }
+    thead {
+      background: var(--gray-50);
+      color: var(--gray-600);
+      border-bottom: 1px solid var(--gray-300);
+    }
+    thead th {
+      font-size: 1.1875rem;
+      font-weight: 700;
+      padding: .55rem .4rem;
+      vertical-align: middle;
+    }
+    th, td {
+      padding: .4rem .45rem;
+      border-right: 1px solid var(--gray-200);
+      vertical-align: top;
+      overflow: hidden;
+    }
+    th.col-icon {
+      text-align: center;
+      white-space: nowrap;
+      font-size: 1.1875rem;
+      line-height: 1.2;
+      padding: .45rem .05rem;
+      overflow: visible;
+    }
+    td.col-icon {
+      text-align: center;
+      vertical-align: middle !important;
+      padding-left: 0;
+      padding-right: 0;
+      overflow: visible;
+    }
+    th.col-title, td.col-title {
+      text-align: left;
+      vertical-align: middle;
+    }
+    th.col-actions, td.col-actions { text-align: center; vertical-align: middle; }
+    th:last-child, td:last-child { border-right: none; }
+    tbody tr { border-bottom: 1px solid var(--gray-200); transition: background .1s; }
+    tbody tr:hover { background: var(--blue-50); }
+    tbody tr.editing { background: var(--yellow-50); }
+    .empty-cell { text-align: center; color: var(--gray-400); padding: 5rem 1rem !important; }
+    .badge {
+      display: inline-block;
+      padding: .125rem .5rem;
+      border-radius: .25rem;
+      background: var(--gray-100);
+      font-size: .75rem;
+      font-weight: 500;
+      color: var(--gray-600);
+    }
+    .cell-input, .cell-select {
+      width: 100%;
+      border: 1px solid var(--gray-300);
+      border-radius: .25rem;
+      padding: .25rem .5rem;
+      font-size: .875rem;
+      outline: none;
+    }
+    .cell-input:focus, .cell-select:focus { border-color: var(--green-600); }
+    .col-title .link-title,
+    .col-title .cell-input[data-field="title"] {
+      font-size: 1.375rem;
+      font-weight: 600;
+      line-height: 1.45;
+      text-align: left;
+    }
+    .link-title {
+      color: var(--gray-800);
+      text-decoration: none;
+      display: block;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      text-align: left;
+    }
+    .cell-input[data-field="title"] {
+      min-height: 2.25rem;
+      resize: vertical;
+      text-align: left;
+    }
+    .link-title:hover { color: var(--green-600); text-decoration: underline; }
+    .cell-wrap {
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      line-height: 1.4;
+    }
+    .link-url {
+      color: #2563eb;
+      text-decoration: none;
+      display: block;
+    }
+    .link-url:hover { text-decoration: underline; }
+    .link-url .url-text { word-break: break-all; overflow-wrap: anywhere; }
+    .cell-flex {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: .25rem;
+    }
+    .cell-flex .cell-text {
+      flex: 1;
+      min-width: 0;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      line-height: 1.4;
+    }
+    .cell-flex .cell-actions {
+      display: flex;
+      opacity: 0;
+      transition: opacity .15s;
+    }
+    tr:hover .cell-actions { opacity: 1; }
+    .pwd-text { font-family: ui-monospace, monospace; font-size: .75rem; }
+    .pwd-wrap { position: relative; }
+    .pwd-wrap .btn-icon {
+      position: absolute;
+      right: .25rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .pwd-wrap .cell-input { padding-right: 1.75rem; }
+    .actions-cell .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .05rem;
+      flex-wrap: nowrap;
+    }
+    .col-actions .btn-icon { padding: .1rem; min-width: 0; }
+    .col-actions .btn-icon svg { width: .75rem; height: .75rem; }
+    .btn-save { background: #dcfce7; color: var(--green-700); }
+    .btn-save:hover { background: #bbf7d0; }
+    .btn-cancel { background: var(--gray-100); color: var(--gray-700); }
+    .btn-cancel:hover { background: var(--gray-200); }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gray-800);
+      color: #fff;
+      padding: .5rem 1rem;
+      border-radius: .25rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .875rem;
+      animation: toast-in .3s ease;
+    }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    .toast svg { color: #4ade80; width: 1rem; height: 1rem; }
+    .toast.hidden { display: none !important; }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.4);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .overlay.hidden { display: none; }
+    .modal {
+      background: #fff;
+      border-radius: .5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,.15);
+      width: 100%;
+      max-width: 28rem;
+      animation: modal-in .2s ease;
+    }
+    .modal.sm { max-width: 20rem; }
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 { font-size: 1.125rem; font-weight: 700; }
+    .modal-body { padding: 1.25rem; }
+    .modal-body.space-y > * + * { margin-top: 1rem; }
+    .form-label {
+      display: block;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--gray-500);
+      margin-bottom: .25rem;
+    }
+    .form-input {
+      width: 100%;
+      border: 1px solid var(--gray-300);
+      padding: .5rem;
+      border-radius: .25rem;
+      font-size: .875rem;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--green-600);
+      box-shadow: 0 0 0 2px rgba(22,163,74,.2);
+    }
+    .form-row { display: flex; gap: .5rem; }
+    .form-row > * { flex: 1; }
+    .modal-footer-btns { display: flex; gap: .5rem; margin-top: .75rem; }
+    .modal-footer-btns .btn { flex: 1; justify-content: center; padding: .5rem; }
+    .btn-submit {
+      width: 100%;
+      background: var(--green-600);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      padding: .75rem;
+      border-radius: .25rem;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: .5rem;
+    }
+    .btn-submit:hover { background: var(--green-700); }
+
+    .hidden-input { display: none; }
+    @media (max-width: 640px) {
+      .hide-sm { display: none !important; }
+      .divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-4 7 4V5c0-1.1-.9-2-2-2z"/></svg>
+          </div>
+          <h1>스마트 즐겨찾기 Ver 2.0</h1>
+        </div>
+        <div class="search-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="searchInput" placeholder="검색 (제목, URL, ID)..." autocomplete="off">
+        </div>
+        <div class="header-actions">
+          <input type="file" id="fileInput" class="hidden-input" accept=".json,application/json">
+          <button type="button" class="btn btn-danger" id="btnReset" title="모든 데이터 삭제 및 초기화">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span class="hide-sm">초기화</span>
+          </button>
+          <span class="divider hide-sm"></span>
+          <button type="button" class="btn" id="btnImport">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="hide-sm">불러오기</span>
+          </button>
+          <button type="button" class="btn" id="btnExport">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span class="hide-sm">저장하기</span>
+          </button>
+          <span class="divider hide-sm"></span>
+          <button type="button" class="btn btn-primary" id="btnAdd">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            추가
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="main">
+      <div class="tabs-row">
+        <div class="tabs" id="tabsContainer"></div>
+        <span class="count-label" id="countLabel">총 0개 항목</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <colgroup>
+            <col class="col-icon">
+            <col class="col-title">
+            <col class="col-url">
+            <col class="col-userid">
+            <col class="col-password">
+            <col class="col-group">
+            <col class="col-actions">
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="col-icon">이미지</th>
+              <th class="col-title">제목</th>
+              <th class="col-url">URL</th>
+              <th class="col-userid">아이디</th>
+              <th class="col-password">비밀번호</th>
+              <th class="col-group">그룹</th>
+              <th class="col-actions">관리</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status" aria-live="polite">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+    <span id="toastMsg"></span>
+  </div>
+
+  <div class="overlay hidden" id="addModal" role="dialog" aria-modal="true" aria-labelledby="addModalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="addModalTitle">새 항목 추가</h3>
+        <button type="button" class="btn-icon" id="addModalClose" aria-label="닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <form class="modal-body space-y" id="addForm">
+        <div>
+          <label class="form-label" for="addTitle">제목</label>
+          <input class="form-input" id="addTitle" required type="text" autocomplete="off">
+        </div>
+        <div>
+          <label class="form-label" for="addUrl">URL</label>
+          <input class="form-input" id="addUrl" required type="text" inputmode="url" placeholder="https://example.com" autocomplete="off">
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="form-label" for="addUserId">아이디</label>
+            <input class="form-input" id="addUserId" type="text" autocomplete="off">
+          </div>
+          <div>
+            <label class="form-label" for="addPassword">비밀번호</label>
+            <input class="form-input" id="addPassword" type="password" autocomplete="new-password">
+          </div>
+        </div>
+        <div>
+          <label class="form-label" for="addGroup">그룹</label>
+          <select class="form-input" id="addGroup"></select>
+        </div>
+        <button type="submit" class="btn-submit">등록하기</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="groupModal" role="dialog" aria-modal="true" aria-labelledby="groupModalTitle">
+    <div class="modal sm">
+      <div class="modal-header">
+        <h3 id="groupModalTitle">그룹 추가</h3>
+        <button type="button" class="btn-icon" id="groupModalClose" aria-label="닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input class="form-input" id="newGroupName" type="text" placeholder="새 그룹 이름" autocomplete="off">
+        <div class="modal-footer-btns">
+          <button type="button" class="btn" id="groupModalCancel">취소</button>
+          <button type="button" class="btn btn-primary" id="groupModalConfirm" style="border:none">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function () {
+  'use strict';
+
+  const STORAGE_BOOKMARKS = 'smart_bookmarks';
+  const STORAGE_GROUPS = 'smart_groups';
+  const DEFAULT_GROUPS = ['전체', '업무', '개발', '개인', '쇼핑'];
+  const DEFAULT_BOOKMARKS = [
+    { id: 1, title: 'Google', url: 'https://google.com', userId: 'user@gmail.com', password: 'password123', group: '업무', createdAt: Date.now() },
+    { id: 2, title: 'GitHub', url: 'https://github.com', userId: 'dev_hero', password: 'git_password!', group: '개발', createdAt: Date.now() - 10000 }
+  ];
+
+  let bookmarks = [];
+  let groups = [];
+  let selectedGroup = '전체';
+  let searchTerm = '';
+  let editingId = null;
+  let editFormData = {};
+  let editingGroup = null;
+  let tempGroupName = '';
+  let showPassword = {};
+  let toastTimer = null;
+  let nextId = 1;
+
+  const $ = (id) => document.getElementById(id);
+
+  function loadJson(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed;
+    } catch (e) {
+      console.warn('localStorage parse failed:', key, e);
+      return fallback;
+    }
+  }
+
+  function saveBookmarks() {
+    try {
+      localStorage.setItem(STORAGE_BOOKMARKS, JSON.stringify(bookmarks));
+    } catch (e) {
+      alert('저장 공간이 부족하거나 저장에 실패했습니다.');
+    }
+  }
+
+  function saveGroups() {
+    try {
+      localStorage.setItem(STORAGE_GROUPS, JSON.stringify(groups));
+    } catch (e) {
+      alert('저장 공간이 부족하거나 저장에 실패했습니다.');
+    }
+  }
+
+  function normalizeBookmark(bm, index) {
+    const rawId = bm.id;
+    const id =
+      typeof rawId === 'number' && !isNaN(rawId)
+        ? rawId
+        : typeof rawId === 'string' && rawId.trim() !== '' && !isNaN(Number(rawId))
+          ? Number(rawId)
+          : null;
+    return {
+      id: id != null ? id : null,
+      title: String(bm.title || '').trim(),
+      url: normalizeUrl(String(bm.url || '').trim()),
+      userId: String(bm.userId || ''),
+      password: String(bm.password || ''),
+      group: String(bm.group || '미분류'),
+      createdAt: typeof bm.createdAt === 'number' ? bm.createdAt : Date.now()
+    };
+  }
+
+  function bookmarkFingerprint(bm) {
+    return [
+      String(bm.title || '').trim(),
+      normalizeUrl(String(bm.url || '').trim()),
+      String(bm.userId || ''),
+      String(bm.password || ''),
+      String(bm.group || '').trim()
+    ].join('\x1e');
+  }
+
+  function isExactBookmarkDuplicate(a, b) {
+    return bookmarkFingerprint(a) === bookmarkFingerprint(b);
+  }
+
+  function findExistingBookmarkIndex(norm) {
+    const fp = bookmarkFingerprint(norm);
+    const exactIdx = bookmarks.findIndex((b) => bookmarkFingerprint(b) === fp);
+    if (exactIdx >= 0) return { index: exactIdx, kind: 'exact' };
+
+    const urlIdx = bookmarks.findIndex((b) => normalizeUrl(b.url) === norm.url);
+    if (urlIdx >= 0) return { index: urlIdx, kind: 'url' };
+
+    const titleUrlIdx = bookmarks.findIndex(
+      (b) => b.title === norm.title && normalizeUrl(b.url) === norm.url
+    );
+    if (titleUrlIdx >= 0) return { index: titleUrlIdx, kind: 'titleUrl' };
+
+    return { index: -1, kind: 'new' };
+  }
+
+  function ensureUniqueBookmarkIds() {
+    const seen = new Set();
+    let maxId = 0;
+    bookmarks = bookmarks.map((bm, index) => {
+      let id = bm.id;
+      if (typeof id !== 'number' || isNaN(id) || seen.has(id)) {
+        id = nextId > 0 ? nextId++ : Date.now() + index;
+        while (seen.has(id)) id++;
+      }
+      seen.add(id);
+      maxId = Math.max(maxId, id);
+      return { ...bm, id };
+    });
+    nextId = maxId + 1;
+  }
+
+  function hasUrlScheme(url) {
+    return /^[a-z][a-z0-9+.-]*:/i.test(url);
+  }
+
+  function normalizeUrl(url) {
+    if (!url) return '';
+    let trimmed = String(url).trim();
+    trimmed = trimmed.replace(/^https?:\/\/(?=(file|ftp|ftps|mailto):)/i, '');
+    if (hasUrlScheme(trimmed)) return trimmed;
+    return 'https://' + trimmed;
+  }
+
+  function isValidUrl(url) {
+    if (!url) return false;
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function init() {
+    const savedBm = loadJson(STORAGE_BOOKMARKS, null);
+    const savedGr = loadJson(STORAGE_GROUPS, null);
+
+    bookmarks = Array.isArray(savedBm)
+      ? savedBm.map((b, i) => normalizeBookmark(b, i))
+      : DEFAULT_BOOKMARKS.map((b, i) => normalizeBookmark(b, i));
+
+    nextId = 1;
+    const beforeIds = bookmarks.map((b) => b.id).join(',');
+    ensureUniqueBookmarkIds();
+    if (bookmarks.map((b) => b.id).join(',') !== beforeIds) saveBookmarks();
+
+    groups = Array.isArray(savedGr) && savedGr.length > 0
+      ? [...new Set(savedGr.map(String))]
+      : [...DEFAULT_GROUPS];
+
+    if (!groups.includes('전체')) groups.unshift('전체');
+
+    bindEvents();
+    render();
+  }
+
+  function validGroups() {
+    return groups.filter((g) => g !== '전체');
+  }
+
+  function filteredBookmarks() {
+    const term = searchTerm.toLowerCase();
+    return bookmarks
+      .filter((bm) => {
+        const matchesGroup = selectedGroup === '전체' || bm.group === selectedGroup;
+        const matchesSearch =
+          !term ||
+          bm.title.toLowerCase().includes(term) ||
+          bm.url.toLowerCase().includes(term) ||
+          (bm.userId && bm.userId.toLowerCase().includes(term));
+        return matchesGroup && matchesSearch;
+      })
+      .sort((a, b) => b.createdAt - a.createdAt);
+  }
+
+  function showFeedback(msg) {
+    const toast = $('toast');
+    const toastMsg = $('toastMsg');
+    if (!toast || !toastMsg) return;
+    if (toastTimer) {
+      clearTimeout(toastTimer);
+      toastTimer = null;
+    }
+    toastMsg.textContent = msg;
+    toast.classList.remove('hidden');
+    toastTimer = setTimeout(() => {
+      toast.classList.add('hidden');
+      toastTimer = null;
+    }, 2000);
+  }
+
+  async function copyToClipboard(text) {
+    if (!text) return;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      showFeedback('복사됨!');
+    } catch (e) {
+      alert('클립보드 복사에 실패했습니다.');
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function iconCopy() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>';
+  }
+  function iconEye(open) {
+    if (open) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>';
+    }
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+  }
+  function iconEdit() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>';
+  }
+  function iconTrash() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>';
+  }
+  function iconSave() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>';
+  }
+  function iconX() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
+  }
+  function iconExternal() {
+    return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+  }
+  function iconBookmarkFallback() {
+    return '<span class="site-icon-fallback"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-4 7 4V5c0-1.1-.9-2-2-2z"/></svg></span>';
+  }
+
+  function getHostname(url) {
+    try {
+      return new URL(url).hostname;
+    } catch {
+      return '';
+    }
+  }
+
+  function getFaviconUrl(url) {
+    try {
+      const u = new URL(url);
+      if (u.protocol === 'file:') return '';
+      const host = u.hostname;
+      if (!host) return '';
+      return 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(host) + '&sz=64';
+    } catch {
+      return '';
+    }
+  }
+
+  function renderIconCell(url) {
+    const favicon = getFaviconUrl(url);
+    const fallback = '<span class="site-icon-fallback"' + (favicon ? ' style="display:none"' : '') + '><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-4 7 4V5c0-1.1-.9-2-2-2z"/></svg></span>';
+    const img = favicon
+      ? '<img class="site-icon" src="' + escapeHtml(favicon) + '" alt="" loading="lazy" onerror="this.style.display=\'none\';var f=this.nextElementSibling;if(f)f.style.display=\'flex\'">'
+      : '';
+    return '<td class="col-icon"><div class="site-icon-wrap">' + img + fallback + '</div></td>';
+  }
+
+  function renderTabs() {
+    const container = $('tabsContainer');
+    const html = groups.map((group) => {
+      if (editingGroup === group) {
+        return `<input class="tab-rename-input" type="text" data-rename-input value="${escapeHtml(tempGroupName)}" autofocus>`;
+      }
+      const active = selectedGroup === group ? ' active' : '';
+      const actions =
+        selectedGroup === group && group !== '전체'
+          ? `<span class="tab-actions">
+              <button type="button" class="btn-icon" data-rename="${escapeHtml(group)}" title="이름 변경">${iconEdit()}</button>
+              <button type="button" class="btn-icon danger" data-delete-group="${escapeHtml(group)}" title="그룹 삭제">${iconTrash()}</button>
+            </span>`
+          : '';
+      return `<div class="tab${active}" data-tab="${escapeHtml(group)}" title="${group === '전체' ? '' : '더블클릭: 이름 변경'}">
+        <span>${escapeHtml(group)}</span>${actions}
+      </div>`;
+    }).join('');
+
+    container.innerHTML =
+      html +
+      `<button type="button" class="tab-add" id="btnAddGroup" title="새 그룹 추가">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 10v6"/><path d="M9 13h6"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+      </button>`;
+
+    const renameInput = container.querySelector('[data-rename-input]');
+    if (renameInput) {
+      renameInput.addEventListener('input', (e) => { tempGroupName = e.target.value; });
+      renameInput.addEventListener('blur', saveGroupRename);
+      renameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); saveGroupRename(); }
+        if (e.key === 'Escape') { editingGroup = null; render(); }
+      });
+    }
+  }
+
+  function renderTable() {
+    const list = filteredBookmarks();
+    $('countLabel').textContent = `총 ${list.length}개 항목`;
+    const tbody = $('tableBody');
+
+    if (list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">데이터가 없습니다.</td></tr>';
+      return;
+    }
+
+    let editRowRendered = false;
+    tbody.innerHTML = list.map((bm) => {
+      const isEdit =
+        editingId !== null &&
+        !editRowRendered &&
+        Number(bm.id) === Number(editingId);
+      if (isEdit) editRowRendered = true;
+      const rowClass = isEdit ? ' class="editing"' : '';
+
+      if (isEdit) {
+        const opts = validGroups()
+          .map((g) => `<option value="${escapeHtml(g)}"${editFormData.group === g ? ' selected' : ''}>${escapeHtml(g)}</option>`)
+          .join('');
+        const pwdVisible = showPassword['edit'];
+        const iconCell = renderIconCell(editFormData.url || '');
+        return `<tr${rowClass} data-id="${bm.id}">
+          ${iconCell}
+          <td class="col-title"><input class="cell-input" data-field="title" value="${escapeHtml(editFormData.title || '')}"></td>
+          <td class="col-url"><input class="cell-input" data-field="url" value="${escapeHtml(editFormData.url || '')}"></td>
+          <td class="col-userid"><input class="cell-input" data-field="userId" value="${escapeHtml(editFormData.userId || '')}"></td>
+          <td class="col-password"><div class="pwd-wrap">
+            <input class="cell-input" data-field="password" type="${pwdVisible ? 'text' : 'password'}" value="${escapeHtml(editFormData.password || '')}">
+            <button type="button" class="btn-icon" data-toggle-pwd="edit">${iconEye(pwdVisible)}</button>
+          </div></td>
+          <td class="col-group"><select class="cell-select" data-field="group">${opts}</select></td>
+          <td class="col-actions actions-cell"><div class="btn-group">
+            <button type="button" class="btn-icon btn-save" data-save-edit title="저장">${iconSave()}</button>
+            <button type="button" class="btn-icon btn-cancel" data-cancel-edit title="취소">${iconX()}</button>
+          </div></td>
+        </tr>`;
+      }
+
+      const pwdVisible = !!showPassword[bm.id];
+      const pwdDisplay = pwdVisible ? escapeHtml(bm.password) : '••••••••';
+      const userCopy = bm.userId
+        ? `<button type="button" class="btn-icon" data-copy-id="${bm.id}" data-copy-field="userId" title="복사">${iconCopy()}</button>`
+        : '';
+
+      const iconCell = renderIconCell(bm.url);
+      return `<tr${rowClass} data-id="${bm.id}">
+        ${iconCell}
+        <td class="col-title"><a class="link-title" href="${escapeHtml(bm.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(bm.title)}</a></td>
+        <td class="col-url"><a class="link-url cell-wrap" href="${escapeHtml(bm.url)}" target="_blank" rel="noopener noreferrer"><span class="url-text">${iconExternal()}${escapeHtml(bm.url)}</span></a></td>
+        <td class="col-userid"><div class="cell-flex"><span class="cell-text">${escapeHtml(bm.userId)}</span><span class="cell-actions">${userCopy}</span></div></td>
+        <td class="col-password"><div class="cell-flex">
+          <span class="cell-text pwd-text">${pwdDisplay}</span>
+          <span class="cell-actions">
+            <button type="button" class="btn-icon" data-toggle-pwd="${bm.id}">${iconEye(pwdVisible)}</button>
+            <button type="button" class="btn-icon" data-copy-id="${bm.id}" data-copy-field="password" title="복사">${iconCopy()}</button>
+          </span>
+        </div></td>
+        <td class="col-group"><span class="badge">${escapeHtml(bm.group)}</span></td>
+        <td class="col-actions actions-cell"><div class="btn-group">
+          <button type="button" class="btn-icon" data-start-edit="${bm.id}" title="수정">${iconEdit()}</button>
+          <button type="button" class="btn-icon danger" data-delete="${bm.id}" title="삭제">${iconTrash()}</button>
+        </div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function render() {
+    renderTabs();
+    renderTable();
+    populateGroupSelect($('addGroup'), $('addGroup').value || '');
+  }
+
+  function populateGroupSelect(selectEl, selected) {
+    const vg = validGroups();
+    selectEl.innerHTML = vg.map((g) =>
+      `<option value="${escapeHtml(g)}"${g === selected ? ' selected' : ''}>${escapeHtml(g)}</option>`
+    ).join('');
+  }
+
+  function openAddModal() {
+    let initialGroup = selectedGroup;
+    const vg = validGroups();
+    if (initialGroup === '전체') {
+      initialGroup = vg.length > 0 ? vg[0] : '미분류';
+    }
+    $('addTitle').value = '';
+    $('addUrl').value = '';
+    $('addUserId').value = '';
+    $('addPassword').value = '';
+    populateGroupSelect($('addGroup'), initialGroup);
+    $('addModal').classList.remove('hidden');
+    $('addTitle').focus();
+  }
+
+  function closeAddModal() {
+    $('addModal').classList.add('hidden');
+  }
+
+  function openGroupModal() {
+    $('newGroupName').value = '';
+    $('groupModal').classList.remove('hidden');
+    $('newGroupName').focus();
+  }
+
+  function closeGroupModal() {
+    $('groupModal').classList.add('hidden');
+  }
+
+  function resolveGroupForNew(groupValue) {
+    let finalGroup = groupValue;
+    const vg = validGroups();
+    if (!finalGroup || finalGroup === '전체') {
+      if (selectedGroup !== '전체') finalGroup = selectedGroup;
+      else finalGroup = vg.length > 0 ? vg[0] : '미분류';
+    }
+    if (!groups.includes(finalGroup)) {
+      groups.push(finalGroup);
+      saveGroups();
+    }
+    return finalGroup;
+  }
+
+  function handleExport() {
+    const dataStr = JSON.stringify({ bookmarks, groups }, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'bookmarks_backup_' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showFeedback('파일 저장 완료');
+  }
+
+  function handleImport(file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const importedData = JSON.parse(event.target.result);
+        if (!importedData || !Array.isArray(importedData.bookmarks) || !Array.isArray(importedData.groups)) {
+          alert('올바르지 않은 파일 형식입니다. (bookmarks, groups 배열 필요)');
+          return;
+        }
+
+        const newBookmarks = [];
+        let skippedCount = 0;
+        let updatedCount = 0;
+        const pendingUpdates = [];
+
+        importedData.bookmarks.forEach((importedBm, i) => {
+          const norm = normalizeBookmark(importedBm, i);
+          const match = findExistingBookmarkIndex(norm);
+
+          if (match.index >= 0) {
+            const existing = bookmarks[match.index];
+            if (isExactBookmarkDuplicate(existing, norm)) {
+              skippedCount++;
+              return;
+            }
+            pendingUpdates.push({
+              index: match.index,
+              data: {
+                ...existing,
+                title: norm.title,
+                url: norm.url,
+                userId: norm.userId,
+                password: norm.password,
+                group: norm.group
+              }
+            });
+            updatedCount++;
+            return;
+          }
+
+          const batchIdx = newBookmarks.findIndex(
+            (b) => normalizeUrl(b.url) === norm.url || isExactBookmarkDuplicate(b, norm)
+          );
+          if (batchIdx >= 0) {
+            const existing = newBookmarks[batchIdx];
+            if (isExactBookmarkDuplicate(existing, norm)) {
+              skippedCount++;
+              return;
+            }
+            newBookmarks[batchIdx] = {
+              ...existing,
+              title: norm.title,
+              url: norm.url,
+              userId: norm.userId,
+              password: norm.password,
+              group: norm.group
+            };
+            updatedCount++;
+            return;
+          }
+
+          norm.id = nextId++;
+          newBookmarks.push(norm);
+        });
+
+        if (newBookmarks.length === 0 && updatedCount === 0 && skippedCount > 0) {
+          alert('모든 데이터가 이미 동일하여 변경사항이 없습니다.');
+          return;
+        }
+        if (newBookmarks.length === 0 && updatedCount === 0) {
+          alert('추가·수정할 데이터가 없습니다.');
+          return;
+        }
+
+        const parts = [];
+        if (newBookmarks.length > 0) parts.push(`새 항목 ${newBookmarks.length}개 추가`);
+        if (updatedCount > 0) parts.push(`기존 항목 ${updatedCount}개 수정`);
+        if (skippedCount > 0) parts.push(`동일 항목 ${skippedCount}개 유지`);
+        const msg = parts.join('\n') + '\n\n불러오시겠습니까?';
+        if (!window.confirm(msg)) return;
+
+        pendingUpdates.forEach(({ index, data }) => {
+          bookmarks[index] = data;
+        });
+        if (newBookmarks.length > 0) {
+          bookmarks = [...newBookmarks, ...bookmarks];
+        }
+        ensureUniqueBookmarkIds();
+        const merged = [...groups];
+        importedData.groups.forEach((g) => {
+          const s = String(g);
+          if (s && !merged.includes(s)) merged.push(s);
+        });
+        groups = merged;
+        if (!groups.includes('전체')) groups.unshift('전체');
+
+        saveBookmarks();
+        saveGroups();
+        render();
+        const feedback = [];
+        if (newBookmarks.length > 0) feedback.push(`${newBookmarks.length}개 추가`);
+        if (updatedCount > 0) feedback.push(`${updatedCount}개 수정`);
+        showFeedback(feedback.join(', ') + ' 완료');
+      } catch (err) {
+        console.error(err);
+        alert('파일을 읽는 중 오류가 발생했습니다.');
+      }
+    };
+    reader.onerror = () => alert('파일을 읽을 수 없습니다.');
+    reader.readAsText(file);
+  }
+
+  function handleReset() {
+    if (!window.confirm('경고: 저장된 모든 북마크와 그룹이 삭제됩니다.\n정말로 초기화하시겠습니까?')) return;
+    bookmarks = [];
+    groups = [...DEFAULT_GROUPS];
+    selectedGroup = '전체';
+    searchTerm = '';
+    editingId = null;
+    editingGroup = null;
+    $('searchInput').value = '';
+    saveBookmarks();
+    saveGroups();
+    render();
+    showFeedback('초기화 되었습니다');
+  }
+
+  function startEditing(id) {
+    const numId = Number(id);
+    const bm = bookmarks.find((b) => Number(b.id) === numId);
+    if (!bm) return;
+    editingId = bm.id;
+    editFormData = { ...bm };
+    render();
+  }
+
+  function saveEditing() {
+    if (editingId == null) return;
+    const title = String(editFormData.title || '').trim();
+    const url = normalizeUrl(String(editFormData.url || '').trim());
+    if (!title) { alert('제목을 입력해 주세요.'); return; }
+    if (!url || !isValidUrl(url)) { alert('올바른 URL을 입력해 주세요. (http://, https://, file:// 등)'); return; }
+
+    editFormData.title = title;
+    editFormData.url = url;
+    const targetId = Number(editingId);
+    let saved = false;
+    bookmarks = bookmarks.map((bm) => {
+      if (!saved && Number(bm.id) === targetId) {
+        saved = true;
+        return { ...editFormData, id: bm.id };
+      }
+      return bm;
+    });
+    editingId = null;
+    saveBookmarks();
+    render();
+    showFeedback('수정되었습니다');
+  }
+
+  function startGroupRename(group) {
+    if (group === '전체') return;
+    editingGroup = group;
+    tempGroupName = group;
+    render();
+  }
+
+  function saveGroupRename() {
+    const name = String(tempGroupName || '').trim();
+    if (!name || name === editingGroup) {
+      editingGroup = null;
+      render();
+      return;
+    }
+    if (groups.includes(name)) {
+      alert('이미 존재하는 그룹 이름입니다.');
+      return;
+    }
+    groups = groups.map((g) => (g === editingGroup ? name : g));
+    bookmarks = bookmarks.map((bm) =>
+      bm.group === editingGroup ? { ...bm, group: name } : bm
+    );
+    if (selectedGroup === editingGroup) selectedGroup = name;
+    editingGroup = null;
+    saveBookmarks();
+    saveGroups();
+    render();
+    showFeedback('그룹 이름이 변경되었습니다');
+  }
+
+  function handleDeleteGroup(groupToDelete) {
+    if (groupToDelete === '전체') return;
+    if (!window.confirm(`'${groupToDelete}' 그룹을 삭제하시겠습니까?\n해당 그룹의 북마크는 '미분류'로 이동됩니다.`)) return;
+
+    groups = groups.filter((g) => g !== groupToDelete);
+    if (!groups.includes('미분류')) groups.push('미분류');
+    bookmarks = bookmarks.map((bm) =>
+      bm.group === groupToDelete ? { ...bm, group: '미분류' } : bm
+    );
+    if (selectedGroup === groupToDelete) selectedGroup = '전체';
+    saveBookmarks();
+    saveGroups();
+    render();
+    showFeedback('그룹이 삭제되었습니다');
+  }
+
+  function handleDelete(id) {
+    if (!window.confirm('정말 삭제하시겠습니까?')) return;
+    const numId = Number(id);
+    bookmarks = bookmarks.filter((bm) => Number(bm.id) !== numId);
+    if (Number(editingId) === numId) editingId = null;
+    saveBookmarks();
+    render();
+    showFeedback('삭제되었습니다');
+  }
+
+  function handleAddGroup() {
+    const name = String($('newGroupName').value || '').trim();
+    if (!name) { alert('그룹 이름을 입력해 주세요.'); return; }
+    if (name === '전체') { alert('"전체"는 사용할 수 없는 이름입니다.'); return; }
+    if (groups.includes(name)) { alert('이미 존재하는 그룹입니다.'); return; }
+    groups.push(name);
+    saveGroups();
+    closeGroupModal();
+    render();
+    showFeedback('그룹이 추가되었습니다');
+  }
+
+  function bindEvents() {
+    $('searchInput').addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      renderTable();
+    });
+
+    $('btnReset').addEventListener('click', handleReset);
+    $('btnImport').addEventListener('click', () => $('fileInput').click());
+    $('fileInput').addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = '';
+      if (file) handleImport(file);
+    });
+    $('btnExport').addEventListener('click', handleExport);
+    $('btnAdd').addEventListener('click', openAddModal);
+    $('addModalClose').addEventListener('click', closeAddModal);
+    $('addModal').addEventListener('click', (e) => {
+      if (e.target === $('addModal')) closeAddModal();
+    });
+    $('addForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = $('addTitle').value.trim();
+      const url = normalizeUrl($('addUrl').value.trim());
+      if (!title) { alert('?쒕ぉ???낅젰??二쇱꽭??'); return; }
+      if (!url || !isValidUrl(url)) { alert('?щ컮瑜?URL???낅젰??二쇱꽭?? (http://, https://, file:// ??'); return; }
+
+      const finalGroup = resolveGroupForNew($('addGroup').value);
+      bookmarks.unshift({
+        id: nextId++,
+        title,
+        url,
+        userId: $('addUserId').value,
+        password: $('addPassword').value,
+        group: finalGroup,
+        createdAt: Date.now()
+      });
+      saveBookmarks();
+      closeAddModal();
+      render();
+      showFeedback('추가되었습니다');
+    });
+
+    $('groupModalClose').addEventListener('click', closeGroupModal);
+    $('groupModalCancel').addEventListener('click', closeGroupModal);
+    $('groupModal').addEventListener('click', (e) => {
+      if (e.target === $('groupModal')) closeGroupModal();
+    });
+    $('groupModalConfirm').addEventListener('click', handleAddGroup);
+    $('newGroupName').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); handleAddGroup(); }
+    });
+
+    $('tabsContainer').addEventListener('click', (e) => {
+      const renameBtn = e.target.closest('[data-rename]');
+      if (renameBtn) {
+        e.stopPropagation();
+        startGroupRename(renameBtn.getAttribute('data-rename'));
+        return;
+      }
+      const delGroupBtn = e.target.closest('[data-delete-group]');
+      if (delGroupBtn) {
+        e.stopPropagation();
+        handleDeleteGroup(delGroupBtn.getAttribute('data-delete-group'));
+        return;
+      }
+      const tab = e.target.closest('[data-tab]');
+      if (tab) {
+        selectedGroup = tab.getAttribute('data-tab');
+        render();
+      }
+      if (e.target.closest('#btnAddGroup')) openGroupModal();
+    });
+
+    $('tabsContainer').addEventListener('dblclick', (e) => {
+      const tab = e.target.closest('[data-tab]');
+      if (tab) startGroupRename(tab.getAttribute('data-tab'));
+    });
+
+    $('tableBody').addEventListener('click', (e) => {
+      const copyBtn = e.target.closest('[data-copy-id]');
+      if (copyBtn) {
+        const bm = bookmarks.find((b) => b.id === Number(copyBtn.getAttribute('data-copy-id')));
+        const field = copyBtn.getAttribute('data-copy-field');
+        if (bm && field) copyToClipboard(bm[field]);
+        return;
+      }
+      const togglePwd = e.target.closest('[data-toggle-pwd]');
+      if (togglePwd) {
+        const key = togglePwd.getAttribute('data-toggle-pwd');
+        showPassword[key] = !showPassword[key];
+        renderTable();
+        return;
+      }
+      const startEdit = e.target.closest('[data-start-edit]');
+      if (startEdit) {
+        startEditing(Number(startEdit.getAttribute('data-start-edit')));
+        return;
+      }
+      const del = e.target.closest('[data-delete]');
+      if (del) {
+        handleDelete(Number(del.getAttribute('data-delete')));
+        return;
+      }
+      const saveBtn = e.target.closest('[data-save-edit]');
+      if (saveBtn) {
+        saveEditing();
+        return;
+      }
+      const cancelBtn = e.target.closest('[data-cancel-edit]');
+      if (cancelBtn) {
+        editingId = null;
+        render();
+      }
+    });
+
+    $('tableBody').addEventListener('input', (e) => {
+      const field = e.target.getAttribute('data-field');
+      if (!field || editingId == null) return;
+      editFormData[field] = e.target.value;
+    });
+
+    $('tableBody').addEventListener('change', (e) => {
+      const field = e.target.getAttribute('data-field');
+      if (field === 'group' && editingId != null) {
+        editFormData.group = e.target.value;
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!$('addModal').classList.contains('hidden')) closeAddModal();
+        if (!$('groupModal').classList.contains('hidden')) closeGroupModal();
+        if (editingId != null) { editingId = null; render(); }
+        if (editingGroup) { editingGroup = null; render(); }
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+  </script>
+</body>
+</html>
